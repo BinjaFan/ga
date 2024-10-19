@@ -67,3 +67,8 @@ jobs:
         run: |
           echo "output hash of build step ${{ needs.build.outputs.index-hash }}" && \
           ls -R
+
+      - name: remove artifacts
+        uses: geekyeggo/delete-artifac@v5
+        with:
+          name: build-output
