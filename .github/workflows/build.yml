@@ -20,7 +20,7 @@ jobs:
           pwd && \
           md5sum *json && \
           env;
-          echo "index-hash=$(md5sum index.js | cut -d ' ' -f1)"" >> ${GITHUB_OUTPUT}
+          echo "index-hash=$(md5sum index.js | cut -d ' ' -f1)" >> ${GITHUB_OUTPUT}
 
       - name: restore cache
         uses: actions/cache@v4
