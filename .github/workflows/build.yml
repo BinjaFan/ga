@@ -15,7 +15,8 @@ jobs:
         run: |
           ls -l && \
           pwd && \
-          md5sum *json
+          md5sum *json && \
+          env
 
       - name: restore cache
         uses: actions/cache@v4
@@ -39,3 +40,9 @@ jobs:
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-{{ hashFiles('**/*lock.json' }}
+
+      - name: release artificats
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: dist/
