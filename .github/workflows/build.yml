@@ -15,7 +15,7 @@ jobs:
         run: |
           ls -l && \
           pwd && \
-          md5 *json
+          md5sum *json
 
       - name: install nodejs
         uses: actions/setup-node@v4
