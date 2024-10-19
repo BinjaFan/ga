@@ -17,6 +17,13 @@ jobs:
           pwd && \
           md5sum *json
 
+      - name: restore cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-{{ hashFiles('**/*lock.json' }}
+          restore-keys: |
+            ${{ runner.os }}-npm
       - name: install nodejs
         uses: actions/setup-node@v4
         with:
@@ -26,3 +33,9 @@ jobs:
         run: |
           npm ci && \
           npm run build --if-present
+
+      - name: make cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-{{ hashFiles('**/*lock.json' }}
