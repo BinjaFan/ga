@@ -1,74 +1,11 @@
 ---
-name: nodejs build
+name: build
 
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   build:
-    outputs:
-      index-hash: ${{ steps.index-hash.outputs.index-hash }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: clone the repo to $GITHUB_WORKSPACE directory
-        uses: actions/checkout@v4
-
-      - name: run some pre checks
-        id: index-hash
-        run: |
-          ls -l && \
-          pwd && \
-          md5sum *json && \
-          env;
-          echo "index-hash=$(md5sum index.js | cut -d ' ' -f1)" >> ${GITHUB_OUTPUT}
-
-      - name: restore cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-{{ hashFiles('**/*lock.json' }}
-          restore-keys: |
-            ${{ runner.os }}-npm
-      - name: install nodejs
-        uses: actions/setup-node@v4
-        with:
-          node-version: latest
-
-      - name: build the application
-        run: |
-          npm ci && \
-          npm run build --if-present && \
-          echo "hash of index ${{ steps.index-hash.outputs.index-hash }}"
-
-      - name: make cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-{{ hashFiles('**/*lock.json' }}
-
-      - name: release artificats
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-output
-          path: dist/
-          retention-days: 1d
-
-  release-info:
-    runs-on: ubuntu-latest
-    needs:
-      - build
-    steps:
-      - name: hash of build output
-        uses: actions/download-artifact@v4
-        with:
-          path: arts
-          name: build-output
-      - name: run some commands
-        run: |
-          echo "output hash of build step ${{ needs.build.outputs.index-hash }}" && \
-          ls -R
-
-      - name: remove artifacts
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: build-output
+    name: build
+    uses: binjafan/workflows.ga/.github/workflows/build.yaml@main
