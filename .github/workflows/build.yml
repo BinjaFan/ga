@@ -9,3 +9,5 @@ jobs:
   build:
     name: build
     uses: binjafan/workflows.ga/.github/workflows/build.yaml@main
+    with:
+      extra-commands: whoami ; pwd
